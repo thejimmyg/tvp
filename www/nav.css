@@ -1,0 +1,324 @@
+/*
+ * Copyright (c) James Gardner 2024 All Rights Reserved
+ * This file is licensed under the GNU Lesser General Public License (LGPL) v3.0.
+ * You may obtain a copy of the license at http://www.gnu.org/licenses/lgpl-3.0.html.
+ * 
+ * This software is distributed WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License
+ * for more details.
+ */
+
+/* ========================= */
+/*         VARIABLES         */
+/* ========================= */
+:root {
+    --padding: 12px;              /* Base padding */
+    --color-bg: #f8f8f8;          /* Light background */
+    --color-hover-bg: #e6e7e7;    /* Hover background */
+    --color-border: #e9e9e9;      /* Border color */
+    --color-separator: #666;      /* Separator color */
+    --color-text: #000;           /* Default text color */
+    --color-active-bg: #e0f7fa;   /* Active link background */
+    --color-hover-bg: #b2ebf2;    /* Hover background for non-active links */
+    --color-heading-bg: #ddd;     /* Mobile nav heading background */
+    --hamburger-multiplier: 1.7;  /* Scale factor of hamburger menu compared to padding */
+    --hamburger-line-multiplier: 0.13;  /* Scale factor of hamburger lines menu compared to padding, try different values to avoid sub-pixel rendering causing problems. */
+}
+
+
+/* ========================= */
+/*           MAIN            */
+/* ========================= */
+
+body {
+    margin: 0;
+    padding: var(--padding);
+}
+
+/* ========================= */
+/*             NAV           */
+/* ========================= */
+
+.nav-container ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    margin-bottom: var(--padding);
+}
+
+/* Mobile-specific styles for the nav container */
+@media (max-width: 768px) {
+    .nav-container {
+        padding-top: calc(3 * var(--padding));
+    }
+}
+
+/* ========================= */
+/*         HAMBURGER         */
+/* ========================= */
+
+/* Common styles for Hamburger */
+.hamburger {
+    display: none;
+    cursor: pointer;
+    position: absolute;
+    top: var(--padding);
+    right: var(--padding);
+    width: calc(var(--hamburger-multiplier) * var(--padding));
+    height: calc(var(--hamburger-multiplier) * var(--padding));
+}
+
+.hamburger div {
+    width: 100%;
+    height: calc(var(--hamburger-line-multiplier) * var(--padding)); /* Thickness of the bars */
+    border: 0;
+    margin: 0;
+    font-size: 0;
+    background-color: var(--color-text);
+    position: absolute;
+    transition: all 0.1s ease-in;
+    z-index: 1000;
+}
+
+/* Try to remove any flashing during transitions in safari mobile */
+.hamburger {
+    -webkit-tap-highlight-color: transparent; /* Disable tap highlight */
+}
+
+
+
+/* Make sure the checkbox itself is always hidden */
+#nav-toggle {
+    display: none;
+}
+
+#nav-toggle:checked ~ .nav-container {
+    display: block;
+}
+
+/* Mobile-specific styles for Hamburger */
+@media (max-width: 768px) {
+    .hamburger {
+        display: block;
+    }
+
+    .hamburger div:nth-child(1) {
+        top: calc((var(--hamburger-multiplier)*0.25)*var(--padding));
+    }
+
+    .hamburger div:nth-child(2) {
+        top: calc(((var(--hamburger-multiplier)*-0.25)*var(--padding)) + (var(--hamburger-multiplier)*var(--padding))); /* Position bottom bar closer to the bottom */
+    }
+
+    #nav-toggle:checked + .hamburger div:nth-child(1) {
+        transform: rotate(45deg);
+        top: calc((var(--hamburger-multiplier)*0.5) * var(--padding)); /* Move top bar to the center */
+    }
+
+    #nav-toggle:checked + .hamburger div:nth-child(2) {
+        transform: rotate(-45deg);
+        top:  calc((var(--hamburger-multiplier)*0.5) * var(--padding)); /* Move bottom bar to the center */
+    }
+
+    /* Hide navigation by default on mobile */
+    .nav-container {
+        display: none;
+    }
+
+    /* Toggle the navigation display when the checkbox is checked */
+    #nav-toggle:checked ~ .nav-container {
+        display: block;
+    }
+}
+
+/* ========================= */
+/*         MAIN NAV          */
+/* ========================= */
+
+ul.main_nav {
+    background-color: var(--color-bg);
+}
+
+ul.main_nav li {
+    position: relative;
+}
+
+ul.main_nav li a, ul.main_nav li span {
+    display: block;
+    padding: calc(var(--padding) * 0.8);
+}
+
+ul.main_nav li span {
+    background-color: var(--color-active-bg);
+}
+
+ul.main_nav li a:hover {
+    background-color: var(--color-hover-bg);
+}
+
+/* Mobile-specific styles for Main nav */
+@media (max-width: 768px) {
+    /* Full-width  */
+    ul.main_nav {
+        display: block;
+    }
+
+    ul.main_nav li {
+        display: block;
+        border-bottom: 1px solid var(--color-border); /* Border all the way along */
+    }
+
+    /* Display "Main navigation" label */
+    ul.main_nav:before {
+        content: "Main navigation";
+        display: block;
+        font-weight: bold;
+        padding: calc(0.8 * var(--padding));
+        background-color: var(--color-heading-bg);
+    }
+}
+
+/* Desktop-specific styles for Main nav */
+@media (min-width: 769px) {
+    ul.main_nav {
+        font-size: 0; /* Leave no gaps */
+        border-bottom: 1px solid var(--color-border); /* Border all the way along */
+    }
+    ul.main_nav li {
+        display: inline-block; /* Side by side */
+        font-size: 1rem; /* Put the font back */
+    }
+}
+
+
+/* ========================= */
+/*        BREADCRUMBS        */
+/* ========================= */
+
+/* Common styles for Breadcrumbs */
+ul.breadcrumbs {
+    background-color: var(--color-bg);
+    border-bottom: 1px solid var(--color-border);
+}
+
+ul.breadcrumbs li {
+    display: inline-block; /* Keep the items inline */
+    position: relative;
+    padding: 0; /* Reset any default padding */
+}
+
+ul.breadcrumbs li a, ul.breadcrumbs li span {
+    padding: calc(var(--padding) * 0.8);
+    display: inline-block;
+}
+
+ul.breadcrumbs li span {
+    background-color: var(--color-active-bg);
+}
+
+ul.breadcrumbs li a:hover {
+    background-color: var(--color-hover-bg); /* Highlight only the text padding on hover */
+}
+
+/* Mobile-specific styles for Breadcrumbs */
+@media (max-width: 768px) {
+    /* Show only .is_parent_link */
+    ul.breadcrumbs {
+        display: block;
+        background-color: var(--color-bg);
+        padding-left: var(--padding);
+        padding-right: var(--padding);
+    }
+
+    ul.breadcrumbs li:not(.is_parent_link) {
+        display: none; /* Hide non-parent links */
+    }
+
+    ul.breadcrumbs li.is_parent_link:before {
+        content: "\2190"; /* Add "Back to" prefix */
+        font-weight: bold;
+    }
+}
+
+/* Desktop-specific styles for Breadcrumbs */
+@media (min-width: 769px) {
+    ul.breadcrumbs li:not(:last-child)::after {
+        content: "/";  /* Use / as a separator */
+        margin-left: calc(var(--padding) * 0.3); /* Small space between the text and separator */
+        color: var(--color-separator); /* Separator color */
+        display: inline-block;
+        vertical-align: middle; /* Align the separator with the text */
+        margin-right: calc(var(--padding) * 0.3); /* Small space between the text and separator */
+    }
+
+    ul.breadcrumbs li:first-child a {
+        margin-left: 0;
+    }
+
+    ul.breadcrumbs li:last-child a {
+    }
+
+    ul.breadcrumbs li:last-child::after {
+        content: ''; /* Remove the separator after the last item */
+    }
+}
+
+/* ========================= */
+/*      SECTION NAV          */
+/* ========================= */
+
+/* Common styles for Section Navigation */
+ul.section_nav li, ul.section_nav ul li {
+    background-color: var(--color-bg);
+    border-bottom: 1px solid var(--color-border);
+    position: relative;
+}
+
+ul.section_nav li a, ul.section_nav li span {
+    padding: calc(var(--padding) * 0.8) calc(var(--padding));
+    display: block;
+}
+
+ul.section_nav ul {
+    padding-left: calc(var(--padding) * 2);
+}
+
+ul.section_nav li span {
+    background-color: var(--color-active-bg);
+}
+
+ul.section_nav li a:hover {
+    background-color: var(--color-hover-bg);
+}
+
+ul.section_nav li.section a::after {
+    content: ">"; /* Unicode for right arrow (→) */
+    float: right;
+    margin-left: calc(var(--padding) * 0.5); /* Space between the text and the arrow */
+    color: var(--color-separator); /* Use the same color as the separator or customize */
+    font-weight: bold; /* Make the arrow bold if needed */
+}
+
+/* Mobile-specific styles for Section Navigation */
+@media (max-width: 768px) {
+    /* Display "In this section" label */
+    ul.section_nav:before {
+        content: "In this section";
+        display: block;
+        font-weight: bold;
+        padding: calc(0.8 * var(--padding));
+        background-color: var(--color-heading-bg);
+    }
+}
+
+/* Desktop-specific styles for Section Navigation */
+@media (min-width: 769px) {
+    ul.section_nav {
+        width: 20%;
+        min-width: 200px;
+    }
+    ul.section_nav {
+        float: left;
+        padding-right: var(--padding);
+    }
+}
